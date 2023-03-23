@@ -112,6 +112,7 @@ package-lock.json
 cache/
 artifacts/@openzeppelin/
 artifacts/build-info/
+artifacts/@dirtycajunrice/
 reference
 /artifacts/@chainlink/
 /scripts/metadata
