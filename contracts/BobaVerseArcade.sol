@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.18;
 
 import { EnumerableMapUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableMapUpgradeable.sol";
 import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
@@ -7,12 +7,13 @@ import { UUPSUpgradeable } from "@openzeppelin/contracts-upgradeable/proxy/utils
 import { PausableUpgradeable } from "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-import { BobaL2TuringClient as TuringClient } from "@dirtycajunrice/contracts/third-party/boba/TuringClient.sol";
+import { BobaL2TuringClient as TuringClient } from "@dirtycajunrice/contracts/third-party/boba/turing/TuringClient.sol";
 import { StandardAccessControl } from "@dirtycajunrice/contracts/utils/access/StandardAccessControl.sol";
 import { Numbers } from "@dirtycajunrice/contracts/utils/math/Numbers.sol";
 
 import { BokkyPooBahsDateTimeLibrary } from "./third-party/BokkyPooBahsDateTimeLibrary.sol";
 import { IBobaVerseArcade } from "./IBobaVerseArcade.sol";
+import { AddressBook } from "./library/AddressBook.sol";
 
 /**
 * @title BobaVerse Arcade v1.0.0
@@ -32,7 +33,7 @@ contract BobaVerseArcade is
     using Numbers for uint256;
 
     // Game Type => Year => Month => Address => Score
-    mapping(GameType => mapping(uint256 => mapping(uint256 => EnumerableMapUpgradeable.AddressToUintMap))) private leaderboards;
+    mapping(GameType gameType => mapping(uint256 year => mapping(uint256 month => EnumerableMapUpgradeable.AddressToUintMap users))) private leaderboards;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -44,13 +45,10 @@ contract BobaVerseArcade is
         __StandardAccessControl_init();
         __UUPSUpgradeable_init();
 
-        __BobaL2TuringClient_init(
-            0x4200000000000000000000000000000000000020,
-            0x680e176b2bbdB2336063d0C82961BDB7a52CF13c
-        );
+        __BobaL2TuringClient_init(AddressBook.turingCredit(), AddressBook.turingHelper());
     }
 
-    function playPlinko() external whenNotPaused nonReentrant {
+    function playPlinko() external payable whenNotPaused nonReentrant {
         _payTuringFee();
         uint256 random = TuringHelper.Random();
         // 77 digit number can be chunked up to 25 times without remainder
@@ -63,6 +61,7 @@ contract BobaVerseArcade is
         uint256 score = (chunks[20] % 200) + 1;
         uint256 year = block.timestamp.getYear();
         uint256 month = block.timestamp.getMonth();
+        leaderboards[GameType.Plinko][year][month];
         (,uint256 lastScore) = leaderboards[GameType.Plinko][year][month].tryGet(msg.sender);
         if (lastScore < score) {
             leaderboards[GameType.Plinko][year][month].set(msg.sender, score);
@@ -79,8 +78,8 @@ contract BobaVerseArcade is
         uint256 len = leaderboards[gameType][year][month].length();
         addresses = new address[](len);
         scores = new uint256[](len);
-        for (uint256 i = 0; i > len; i++) {
-        (addresses[i], scores[i]) = leaderboards[gameType][year][month].at(i);
+        for (uint256 i = 0; i < len; i++) {
+            (addresses[i], scores[i]) = leaderboards[gameType][year][month].at(i);
         }
     }
 

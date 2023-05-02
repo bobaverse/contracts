@@ -1,1 +1,38 @@
-{}
+{
+  "288": {
+    "0x5c1b6dba534fB4E1828278C9d9d6Fa1B15A67dB8": {
+      "name": "TuringHelper",
+      "type": "uups",
+      "impl": "0x750D6ADa815Ee106BEbc51D7CBa0Ee616000655e"
+    },
+    "0x8a64123e26E3AE48ed08Ee3dBA67B9a57982Fd17": {
+      "name": "BobaVerseArcade",
+      "type": "uups",
+      "impl": "0x2B25d5BA27C84d856F7b633de7f9b4745F242caC"
+    }
+  },
+  "43288": {
+    "0xe6e44a9F71940b13C44CC3782528E52B611dD1f4": {
+      "name": "TuringHelper",
+      "type": "uups",
+      "impl": "0x12d1Effa571d4C703CCcD748690fe10ab5F5d3dE"
+    },
+    "0x4216118aD0B070217fDB7F3bb0fb24Cc98B1F95b": {
+      "name": "BobaVerseArcade",
+      "type": "uups",
+      "impl": "0x3F3AB3Dc9FE7D90E981967322aC6C9c43510cE77"
+    }
+  },
+  "56288": {
+    "0xa0830985871c69c5F4788A6f95B3a238e2Bb8afC": {
+      "name": "TuringHelper",
+      "type": "uups",
+      "impl": "0x3f4E54C7B232016a49638ce54A70774101742Bb5"
+    },
+    "0x53d1B430C0bC7D808B635DAFE9520f18dcCf6E3a": {
+      "name": "BobaVerseArcade",
+      "type": "uups",
+      "impl": "0x3e9694a37846C864C67253af6F5d1F534ff3BF46"
+    }
+  }
+}

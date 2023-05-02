@@ -19,17 +19,46 @@ const settings = {
   },
 }
 
-const compilers = ["0.8.17", "0.8.16", "0.8.9", "0.8.2", "0.6.0"].map(version => ({ version, settings }));
+const compilers = [
+  "0.8.18", "0.8.17", "0.8.16", "0.8.9", "0.8.2", "0.6.0"
+].map(version => ({ version, settings }));
 
 
 const networkBase: { [name: string]: NetworkBase } = {
+  bobaEth: {
+    name: 'bobaEth',
+    chainId: 288,
+    urls: {
+      rpc: 'https://mainnet.boba.network',
+      api: "https://api.bobascan.com/api",
+      browser: "https://bobascan.com/",
+    }
+  },
+  bobaOpera: {
+    name: 'bobaOpera',
+    chainId: 301,
+    urls: {
+      rpc: 'https://bobaopera.boba.network',
+      api: "https://blockexplorer.bobaopera.boba.network/api",
+      browser: "https://blockexplorer.bobaopera.boba.network",
+    }
+  },
   bobaAvax: {
     name: 'bobaAvax',
-    chainId: 43288,
+    chainId: 43_288,
     urls: {
       rpc: 'https://avax.boba.network',
       api: "https://blockexplorer.avax.boba.network/api",
       browser: "https://blockexplorer.avax.boba.network",
+    }
+  },
+  bobaBnb: {
+    name: 'bobaBnb',
+    chainId: 56_288,
+    urls: {
+      rpc: 'https://bnb.boba.network',
+      api: "https://blockexplorer.bnb.boba.network/api",
+      browser: "https://blockexplorer.bnb.boba.network",
     }
   }
 }
@@ -68,7 +97,10 @@ const config: HardhatUserConfig = {
   networks,
   etherscan: {
     apiKey: {
-      bobaAvax: 'not-needed'
+      bobaEth: process.env.BOBASCAN_API_KEY || '',
+      bobaOpera: 'not-needed',
+      bobaAvax: 'not-needed',
+      bobaBnb: 'not-needed',
     },
     customChains: GetEtherscanCustomChains()
   }
