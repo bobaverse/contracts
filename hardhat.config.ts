@@ -43,6 +43,15 @@ const networkBase: { [name: string]: NetworkBase } = {
       browser: "https://blockexplorer.bobaopera.boba.network",
     }
   },
+  bobaBeam: {
+    name: 'bobaBeam',
+    chainId: 1_294,
+    urls: {
+      rpc: 'https://bobabeam.boba.network',
+      api: "https://blockexplorer.bobabeam.boba.network/api",
+      browser: "https://blockexplorer.bobabeam.boba.network",
+    }
+  },
   bobaAvax: {
     name: 'bobaAvax',
     chainId: 43_288,
@@ -99,6 +108,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       bobaEth: process.env.BOBASCAN_API_KEY || '',
       bobaOpera: 'not-needed',
+      bobaBeam: 'not-needed',
       bobaAvax: 'not-needed',
       bobaBnb: 'not-needed',
     },

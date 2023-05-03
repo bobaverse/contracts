@@ -11,6 +11,18 @@
       "impl": "0x2B25d5BA27C84d856F7b633de7f9b4745F242caC"
     }
   },
+  "1294": {
+    "0x3e9694a37846C864C67253af6F5d1F534ff3BF46": {
+      "name": "TuringHelper",
+      "type": "uups",
+      "impl": "0xa0830985871c69c5F4788A6f95B3a238e2Bb8afC"
+    },
+    "0x0f0256653CcaaD4cfAa2568CcE3b65cF13D10D72": {
+      "name": "BobaVerseArcade",
+      "type": "uups",
+      "impl": "0x53d1B430C0bC7D808B635DAFE9520f18dcCf6E3a"
+    }
+  },
   "43288": {
     "0xe6e44a9F71940b13C44CC3782528E52B611dD1f4": {
       "name": "TuringHelper",
@@ -32,7 +44,7 @@
     "0x53d1B430C0bC7D808B635DAFE9520f18dcCf6E3a": {
       "name": "BobaVerseArcade",
       "type": "uups",
-      "impl": "0x3e9694a37846C864C67253af6F5d1F534ff3BF46"
+      "impl": "0x0CcA1A0172114404515B52239209Bd4041405b82"
     }
   }
 }
