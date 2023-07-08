@@ -27,12 +27,17 @@
     "0xe6e44a9F71940b13C44CC3782528E52B611dD1f4": {
       "name": "TuringHelper",
       "type": "uups",
-      "impl": "0x12d1Effa571d4C703CCcD748690fe10ab5F5d3dE"
+      "impl": "0xe0f89a940B1ab09E4726d66612Ff711809018bd7"
     },
     "0x4216118aD0B070217fDB7F3bb0fb24Cc98B1F95b": {
       "name": "BobaVerseArcade",
       "type": "uups",
       "impl": "0x3F3AB3Dc9FE7D90E981967322aC6C9c43510cE77"
+    },
+    "0x65b350f76cE87746B52977DD89719E7361A34779": {
+      "name": "TuringHelper",
+      "type": "uups",
+      "impl": "0xe0f89a940B1ab09E4726d66612Ff711809018bd7"
     }
   },
   "56288": {
