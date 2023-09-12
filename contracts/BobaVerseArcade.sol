@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import { EnumerableMapUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableMapUpgradeable.sol";
 import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
@@ -86,6 +86,14 @@ contract BobaVerseArcade is
     ) private leaderboards;
 
     /**
+     * @notice mapping to store user credits.
+     *
+     * @dev The `credits` mapping carries address-to-uint pairs, representing a wallet along
+     * with their available credits.
+     */
+    mapping (address wallet => uint256 credits) public credits;
+
+    /**
      * @dev constructor function
      *
      * It's a special function that gets executed only once during the contract's deployment.
@@ -100,7 +108,6 @@ contract BobaVerseArcade is
     }
 
     /**
-     * @title Initialize Function
      * @notice This function is used to initialize different types of contracts in the overall contract structure.
      * @dev This function should be called only once, immediately after the contract deployment.
      * Safe to override, as far as the initializer modifier is used to ensure single initialization.
@@ -156,6 +163,7 @@ contract BobaVerseArcade is
      * @notice Requires Ether to play.
      */
     function playPlinko() external payable whenNotPaused nonReentrant {
+        _deductCredit();
         _payTuringFee();
         uint256 random = TuringHelper.Random();
         /// 77 digit number can be chunked up to 25 times without remainder
@@ -178,7 +186,6 @@ contract BobaVerseArcade is
     }
 
     /**
-     * @title getLeaderboard
      * @dev fetches and returns the leaderboard for a specific game type
      * @param gameType a GameType object that represents the type of game for which the leaderboard is to be obtained
      * @return addresses an array of Ethereum addresses of players ranked in the leaderboard
@@ -205,7 +212,6 @@ contract BobaVerseArcade is
     }
 
     /**
-     * @title getLeaderboard
      * @dev fetches and returns the leaderboard for a specific game type
      * @param gameType a GameType object that represents the type of game for which the leaderboard is to be obtained
      * @return addresses an array of Ethereum addresses of players ranked in the leaderboard
@@ -232,7 +238,43 @@ contract BobaVerseArcade is
     }
 
     /**
-     * @title _authorizeUpgrade
+     * @dev Deducts 1 credit from the credit balance of the caller's address
+     *
+     * This is an internal function that deducts 1 credit from the credit balance of the
+     * caller's address (msg.sender). If the credit balance is already 0, it reverts
+     * the transaction and triggers the 'NoCreditsRemaining' error.
+     */
+    function _deductCredit() internal {
+        if (credits[msg.sender] == 0) revert NoCreditsRemaining();
+        credits[msg.sender] -= 1;
+    }
+
+    /**
+     * @dev Adds credits to given wallets
+     *
+     * Can only be called by addresses with the CONTRACT_ROLE due to the 'onlyContract' modifier
+     *
+     * The function operates on arrays of addresses and their corresponding
+     * credits. The function checks that the passed arrays are not empty and have equal length.
+     * If these conditions are not met, it reverts the transaction with an 'EmptyArray'
+     * or 'ArrayLengthMismatch' error respectively
+     *
+     * For each address in the input array, the function increases the corresponding credit
+     * amount in the 'credits' mapping
+     *
+     * @param wallets An array of Ethereum addresses to which credits are to be added.
+     * @param _credits An array of credit amounts corresponding to each address.
+     */
+    function addCredits(address[] calldata wallets, uint256[] calldata _credits) external onlyContract {
+        if (wallets.length == 0) revert EmptyArray();
+        if (wallets.length != _credits.length) revert ArrayLengthMismatch(wallets.length, _credits.length);
+
+        for (uint256 i = 0; i < wallets.length; i++) {
+            credits[wallets[i]] += _credits[i];
+        }
+    }
+
+    /**
      * @dev callable only by the defaultAdmin.
      * @param newImplementation an address that points to the new implementation of the contract
      *

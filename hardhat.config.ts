@@ -1,32 +1,14 @@
-import "@nomicfoundation/hardhat-toolbox";
+import '@nomicfoundation/hardhat-verify';
 import '@openzeppelin/hardhat-upgrades';
 import "@dirtycajunrice/hardhat-tasks";
-import { HardhatUserConfig } from "hardhat/config";
-import { NetworkBase } from "@dirtycajunrice/hardhat-tasks";
-
 import "dotenv/config";
 import "./tasks";
 
-const settings = {
-  optimizer: {
-    enabled: true,
-    runs: 200
-  },
-  outputSelection: {
-    '*': {
-      '*': ['storageLayout'],
-    },
-  },
-}
+import { HardhatUserConfig, NetworksUserConfig } from "hardhat/types";
 
-const compilers = [
-  "0.8.18", "0.8.17", "0.8.16", "0.8.9", "0.8.2", "0.6.0"
-].map(version => ({ version, settings }));
-
-
-const networkBase: { [name: string]: NetworkBase } = {
-  bobaEth: {
-    name: 'bobaEth',
+const networkData = [
+  {
+    name: 'mainnet',
     chainId: 288,
     urls: {
       rpc: 'https://mainnet.boba.network',
@@ -34,35 +16,8 @@ const networkBase: { [name: string]: NetworkBase } = {
       browser: "https://bobascan.com/",
     }
   },
-  bobaOpera: {
-    name: 'bobaOpera',
-    chainId: 301,
-    urls: {
-      rpc: 'https://bobaopera.boba.network',
-      api: "https://blockexplorer.bobaopera.boba.network/api",
-      browser: "https://blockexplorer.bobaopera.boba.network",
-    }
-  },
-  bobaBeam: {
-    name: 'bobaBeam',
-    chainId: 1_294,
-    urls: {
-      rpc: 'https://bobabeam.boba.network',
-      api: "https://blockexplorer.bobabeam.boba.network/api",
-      browser: "https://blockexplorer.bobabeam.boba.network",
-    }
-  },
-  bobaAvax: {
-    name: 'bobaAvax',
-    chainId: 43_288,
-    urls: {
-      rpc: 'https://avax.boba.network',
-      api: "https://blockexplorer.avax.boba.network/api",
-      browser: "https://blockexplorer.avax.boba.network",
-    }
-  },
-  bobaBnb: {
-    name: 'bobaBnb',
+  {
+    name: 'bnb',
     chainId: 56_288,
     urls: {
       rpc: 'https://bnb.boba.network',
@@ -70,49 +25,34 @@ const networkBase: { [name: string]: NetworkBase } = {
       browser: "https://blockexplorer.bnb.boba.network",
     }
   }
-}
-
-export const GetNetworks = (accounts: string[]) => {
-  return Object.entries(networkBase).reduce((o, [, network]) => {
-    o[network.name] = {
-      url: network.urls.rpc,
-      chainId: network.chainId,
-      accounts: accounts
-    }
-    return o;
-  }, {} as any)
-}
-
-export const GetEtherscanCustomChains = () => {
-  return Object.entries(networkBase).reduce((o, [, network]) => {
-    if (network.urls.api && network.urls.browser) {
-      o.push({
-        network: network.name,
-        chainId: network.chainId,
-        urls: {
-          apiURL: network.urls.api,
-          browserURL: network.urls.browser,
-        },
-      })
-    }
-    return o;
-  }, [] as any)
-}
-
-const networks = GetNetworks([process.env.PRIVATE_KEY])
+]
 
 const config: HardhatUserConfig = {
-  solidity: { compilers },
-  networks,
+  defaultNetwork: 'mainnet',
+  solidity: {
+    compilers: [ "0.8.20",  "0.8.9", "0.8.2", "0.6.0" ].map(version => ({
+      version,
+      settings: {
+        ...(version.replace('0.8.', '') === '20' ? {evmVersion: 'london' } : {}),
+        optimizer: { enabled: true, runs: 200 },
+        outputSelection: { '*': { '*': [ 'storageLayout' ] } },
+      }
+    }))
+  },
+  networks: networkData.reduce((o, network) => {
+    o[network.name] = { url: network.urls.rpc, chainId: network.chainId, accounts: [ process.env.PRIVATE_KEY ] }
+    return o;
+  }, {} as NetworksUserConfig),
   etherscan: {
-    apiKey: {
-      bobaEth: process.env.BOBASCAN_API_KEY || '',
-      bobaOpera: 'not-needed',
-      bobaBeam: 'not-needed',
-      bobaAvax: 'not-needed',
-      bobaBnb: 'not-needed',
-    },
-    customChains: GetEtherscanCustomChains()
+    apiKey: networkData.reduce((o, network) => {
+      o[network.name] = process.env[`${network.name.toUpperCase()}_ETHERSCAN_API_KEY`] || 'not-needed';
+      return o;
+    }, {} as Record<string, string>),
+    customChains: networkData.map(network => ({
+      network: network.name,
+      chainId: network.chainId,
+      urls: { apiURL: network.urls.api, browserURL: network.urls.browser },
+    }))
   }
 };
 

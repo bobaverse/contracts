@@ -30,4 +30,13 @@ interface IBobaVerseArcade {
      * @param score The final score achieved by the player.
      */
     event PlinkoResult(address from, uint256[] ballPositions, uint256 score);
+
+    /**
+     * @dev Error when the caller has no credits remaining.
+     */
+    error NoCreditsRemaining();
+
+    error ArrayLengthMismatch(uint256 array1, uint256 array2);
+
+    error EmptyArray();
 }

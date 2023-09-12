@@ -1,4 +1,4 @@
-= %%PROJECT_NAME%% Contracts
+= BobaVerse Contracts
 :table-stripes: none
 :table-caption: Contracts Table
 
@@ -13,26 +13,33 @@ endif::[]
 :fn-deprecated: footnote:deprecated[Deprecated. This contract is at the end of its lifecycle and will be disabled soon]
 :fn-discontinued: footnote:discontinued[Discontinued. This contract is no longer active, and is still here for posterity]
 
-This repository contains all contracts related to = %%PROJECT_NAME%%. Our intention is to help raise the standard of
+This repository contains all contracts related to BobaVerse. Our intention is to help raise the standard of
 transparency across blockchain development.
 
 [NOTE]
 ====
 The existence of a contract in this repository does not guarantee that a contract has, or ever will be,
-used or integrated into the %%PROJECT_NAME%% ecosystem.
+used or integrated into the BobaVerse ecosystem.
 ====
 
 .Security contact
 [%collapsible]
 ====
-DirtyCajunRice#0001 (Discord)
+DirtyCajunRice (Discord)
 ====
 
-.Ethereum
+.Boba Network
 [cols="^.^,^.^,^.^,^.^"]
 |===
 h|Category h|Contract h|Address h|Explorer Link
-s|Token (ERC20) |MyToken |`0x0000000000000000000000000000000000000000` |https://etherscan.io/address/0x32614E7D3C52Cd66BF2cb8CC17884749E4B070d4[Etherscan,role=external,window=_blank]
+s|Core |TuringHelper |`0x5c1b6dba534fB4E1828278C9d9d6Fa1B15A67dB8` |https://bnb.bobascan.com/address/0x5c1b6dba534fB4E1828278C9d9d6Fa1B15A67dB8[Bobascan,role=external,window=_blank]
+s|Interactive |Arcade |`0x8a64123e26E3AE48ed08Ee3dBA67B9a57982Fd17` |https://eth.bobascan.com/address/0x8a64123e26E3AE48ed08Ee3dBA67B9a57982Fd17[Bobascan,role=external,window=_blank]
 |===
 
-== Setup
+.Boba BNB
+[cols="^.^,^.^,^.^,^.^"]
+|===
+h|Category h|Contract h|Address h|Explorer Link
+s|Core |TuringHelper |`0xa0830985871c69c5F4788A6f95B3a238e2Bb8afC` |https://bnb.bobascan.com/address/0xa0830985871c69c5F4788A6f95B3a238e2Bb8afC[Bobascan,role=external,window=_blank]
+s|Interactive |Arcade |`0x53d1B430C0bC7D808B635DAFE9520f18dcCf6E3a` |https://bnb.bobascan.com/address/0x53d1B430C0bC7D808B635DAFE9520f18dcCf6E3a[Bobascan,role=external,window=_blank]
+|===

@@ -4,6 +4,32 @@
   "sourceName": "contracts/IBobaVerseArcade.sol",
   "abi": [
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "array1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "array2",
+          "type": "uint256"
+        }
+      ],
+      "name": "ArrayLengthMismatch",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "EmptyArray",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoCreditsRemaining",
+      "type": "error"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {

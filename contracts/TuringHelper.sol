@@ -30,13 +30,13 @@ import { AddressBook } from "./library/AddressBook.sol";
  */
 contract TuringHelper is ITuringHelper, Initializable, StandardAccessControl, PausableUpgradeable, UUPSUpgradeable {
 /**
-     * @error __TuringHelper_NoPayload
+     * @dev __TuringHelper_NoPayload
      * Indicates that required payload is missing.
      */
     error __TuringHelper_NoPayload();
 
     /**
-     * @error __TuringHelper_NotSelf
+     * @dev __TuringHelper_NotSelf
      * Raised when the address that is expected to match the contract's own address doesn't match.
      * @param expected The expected contract's own address.
      * @param actual The actual address against which the contract's address was compared.
@@ -44,80 +44,80 @@ contract TuringHelper is ITuringHelper, Initializable, StandardAccessControl, Pa
     error __TuringHelper_NotSelf(address expected, address actual);
 
     /**
-     * @error __TuringHelper_InvalidAddress
+     * @dev __TuringHelper_InvalidAddress
      * Raised when an address that is expected to be valid is not valid.
      * @param addr The invalid address.
      */
     error __TuringHelper_InvalidAddress(address addr);
 
     /**
-     * @error __TuringHelper_GethInterceptFailure
+     * @dev __TuringHelper_GethInterceptFailure
      * Indicates that the geth intercept operation failed.
      */
     error __TuringHelper_GethInterceptFailure();
 
     /**
-     * @error __TuringHelper_IncorrectInputState
+     * @dev __TuringHelper_IncorrectInputState
      * Indicates that the input state is incorrect.
      */
     error __TuringHelper_IncorrectInputState();
 
     /**
-     * @error __TuringHelper_CallDataTooShort
+     * @dev __TuringHelper_CallDataTooShort
      * Indicates that the call data provided is too short.
      */
     error __TuringHelper_CallDataTooShort();
 
     /**
-     * @error __TuringHelper_UrlGt64Bytes
+     * @dev __TuringHelper_UrlGt64Bytes
      * Indicates that the provided URL exceeds 64 bytes in length.
      */
     error __TuringHelper_UrlGt64Bytes();
 
     /**
-     * @error __TuringHelper_ServerError
+     * @dev __TuringHelper_ServerError
      * Indicates an error from the server.
      */
     error __TuringHelper_ServerError();
 
     /**
-     * @error __TuringHelper_CouldNotDecodeServerResponse
+     * @dev __TuringHelper_CouldNotDecodeServerResponse
      * Indicates that the server response could not be decoded.
      */
     error __TuringHelper_CouldNotDecodeServerResponse();
 
     /**
-     * @error __TuringHelper_CouldNotCreateRpcClient
+     * @dev __TuringHelper_CouldNotCreateRpcClient
      * Indicates that a RPC client could not be created.
      */
     error __TuringHelper_CouldNotCreateRpcClient();
 
     /**
-     * @error __TuringHelper_RngFailure
+     * @dev __TuringHelper_RngFailure
      * Indicates that there was a failure in generating a random number.
      */
     error __TuringHelper_RngFailure();
 
     /**
-     * @error __TuringHelper_ApiResponseGt322Chars
+     * @dev __TuringHelper_ApiResponseGt322Chars
      * Indicates that an API response was greater than 322 characters.
      */
     error __TuringHelper_ApiResponseGt322Chars();
 
     /**
-     * @error __TuringHelper_ApiResponseGt160Bytes
+     * @dev __TuringHelper_ApiResponseGt160Bytes
      * Indicates that an API response was greater than 160 bytes.
      */
     error __TuringHelper_ApiResponseGt160Bytes();
 
     /**
-     * @error __TuringHelper_InsufficientCredit
+     * @dev __TuringHelper_InsufficientCredit
      * Indicates that there is insufficient credit for the operation.
      */
     error __TuringHelper_InsufficientCredit();
 
     /**
-     * @error __TuringHelper_MissingCacheEntry
+     * @dev __TuringHelper_MissingCacheEntry
      * Indicates that a needed cache entry is missing.
      */
     error __TuringHelper_MissingCacheEntry();
@@ -158,7 +158,6 @@ contract TuringHelper is ITuringHelper, Initializable, StandardAccessControl, Pa
     }
 
     /**
-     * @title Initialize Function
      * @notice This function is used to initialize different types of contracts in the overall contract structure.
      * @dev This function should be called only once, immediately after the contract deployment.
      * Safe to override, as far as the initializer modifier is used to ensure single initialization.
@@ -432,7 +431,6 @@ contract TuringHelper is ITuringHelper, Initializable, StandardAccessControl, Pa
     }
 
     /**
-     * @title _authorizeUpgrade
      * @dev callable only by the defaultAdmin.
      * @param newImplementation an address that points to the new implementation of the contract
      *
