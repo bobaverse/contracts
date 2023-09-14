@@ -1,8 +1,12 @@
+import * as tenderly from "@tenderly/hardhat-tenderly";
 import '@nomicfoundation/hardhat-verify';
 import '@openzeppelin/hardhat-upgrades';
+import "@dirtycajunrice/hardhat-tasks/internal/type-extensions"
 import "@dirtycajunrice/hardhat-tasks";
 import "dotenv/config";
 import "./tasks";
+
+tenderly.setup({ automaticVerifications: false });
 
 import { HardhatUserConfig, NetworksUserConfig } from "hardhat/types";
 
@@ -12,8 +16,8 @@ const networkData = [
     chainId: 288,
     urls: {
       rpc: 'https://mainnet.boba.network',
-      api: "https://api.bobascan.com/api",
-      browser: "https://bobascan.com/",
+      api: "https://api.routescan.io/v2/network/mainnet/evm/288/etherscan",
+      browser: "https://eth.bobascan.com",
     }
   },
   {
@@ -21,8 +25,8 @@ const networkData = [
     chainId: 56_288,
     urls: {
       rpc: 'https://bnb.boba.network',
-      api: "https://blockexplorer.bnb.boba.network/api",
-      browser: "https://blockexplorer.bnb.boba.network",
+      api: "https://api.routescan.io/v2/network/mainnet/evm/56288/etherscan",
+      browser: "https://bnb.bobascan.com",
     }
   }
 ]
@@ -36,8 +40,30 @@ const config: HardhatUserConfig = {
         ...(version.replace('0.8.', '') === '20' ? {evmVersion: 'london' } : {}),
         optimizer: { enabled: true, runs: 200 },
         outputSelection: { '*': { '*': [ 'storageLayout' ] } },
-      }
-    }))
+      },
+    })),
+    overrides: {
+      "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol": {
+        version: "0.8.9",
+        settings: { optimizer: { enabled: true, runs: 200 } },
+      },
+      "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol": {
+        version: "0.8.9",
+        settings: { optimizer: { enabled: true, runs: 200 } },
+      },
+      "@openzeppelin/contracts/proxy/beacon/UpgradeableBeacon.sol": {
+        version: "0.8.9",
+        settings: { optimizer: { enabled: true, runs: 200 } },
+      },
+      "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol": {
+        version: "0.8.9",
+        settings: { optimizer: { enabled: true, runs: 200 } },
+      },
+      "contracts/proxy.sol": {
+        version: "0.8.9",
+        settings: { optimizer: { enabled: true, runs: 200 } },
+      },
+    },
   },
   networks: networkData.reduce((o, network) => {
     o[network.name] = { url: network.urls.rpc, chainId: network.chainId, accounts: [ process.env.PRIVATE_KEY ] }
@@ -53,6 +79,10 @@ const config: HardhatUserConfig = {
       chainId: network.chainId,
       urls: { apiURL: network.urls.api, browserURL: network.urls.browser },
     }))
+  },
+  tenderly: {
+    project: 'bobaverse',
+    username: 'DirtyCajunRice',
   }
 };
 

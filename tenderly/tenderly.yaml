@@ -1,0 +1,29 @@
+account_id: ""
+actions:
+  dirtycajunrice/bobaverse:
+    runtime: v2
+    sources: actions
+    specs:
+      arcade:
+        description: Grant a user 1 credit for each of their bridge transactions
+        execution_type: sequential
+        function: arcade:addCredit
+        trigger:
+          type: transaction
+          transaction:
+            status:
+            - mined
+            filters:
+            - network: 288
+              status: success
+              eventEmitted:
+                contract:
+                  address: 0x4200000000000000000000000000000000000010
+                name: DepositFinalized
+            - network: 56288
+              status: success
+              eventEmitted:
+                contract:
+                  address: 0x4200000000000000000000000000000000000010
+                name: DepositFinalized
+project_slug: ""
