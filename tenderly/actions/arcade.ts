@@ -23,7 +23,7 @@ export const addCredit: ActionFn = async (context: Context, event: Event) => {
     throw new Error("No deposit finalized event found");
   }
 
-  const [ l1Token, l2Token, /** from */, to, amount, /** data */ ] = bc.interface.decodeEventLog("AssetTeleported", depositFinalizedEvent.data, depositFinalizedEvent.topics);
+  const [ l1Token, l2Token, /** from */, to, amount, /** data */ ] = bc.interface.decodeEventLog("DepositFinalized", depositFinalizedEvent.data, depositFinalizedEvent.topics);
 
 
   console.log(`Adding 1 Credit to ${to} on ${context.metadata.getNetwork()} for bridging ${amount} ${l1Token} (L2: ${l2Token})`);
@@ -38,7 +38,14 @@ const getWallet = async (context: Context) => {
   if (network === undefined) {
     throw new Error("No network found in metadata");
   }
-  const gatewayUrl = context.gateways.getGateway(network);
+  let gatewayUrl;
+  try {
+    gatewayUrl = context.gateways.getGateway(network);
+  } catch (e) {
+    console.log("Error getting gateway url:", e);
+    gatewayUrl = `https://boba-${network === Network.BOBA_ETHEREUM ? 'ethereum' : 'bnb'}.gateway.tenderly.co`;
+  }
+
   const provider = new ethers.providers.JsonRpcProvider(gatewayUrl);
   const pk = await context.secrets.get("arcadeCredits.addressPrivateKey");
   return new ethers.Wallet(pk, provider);
