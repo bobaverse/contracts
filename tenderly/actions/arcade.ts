@@ -43,7 +43,7 @@ const getWallet = async (context: Context) => {
     gatewayUrl = context.gateways.getGateway(network);
   } catch (e) {
     console.log("Error getting gateway url:", e);
-    gatewayUrl = `https://boba-${network === Network.BOBA_ETHEREUM ? 'ethereum' : 'bnb'}.gateway.tenderly.co`;
+    gatewayUrl = `https://${network === Network.BOBA_ETHEREUM ? 'mainnet' : 'bnb'}.boba.network`;
   }
 
   const provider = new ethers.providers.JsonRpcProvider(gatewayUrl);
